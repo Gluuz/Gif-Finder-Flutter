@@ -1,8 +1,8 @@
-# Gif Searcher Flutter
+# Gif Finder in flutter using GIPHY API Developers
 
 
 
-## Getting Started1
+## Getting Started
 
 This project is a starting point for a Flutter application.
 
