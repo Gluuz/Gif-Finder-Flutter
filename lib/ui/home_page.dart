@@ -11,26 +11,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _search = "";
+  var _search;
   int offSet = 0;
 
   Future<Map> _getGifs() async {
     http.Response response;
     if (_search == null)
       response = await http.get(Uri.parse(
-          "https://api.giphy.com/v1/gifs/trending?api_key=N8EbEGTWj3Cy8583Ad35LsDBtDQqd5Bw&limit=20&rating=g"));
+          "https://api.giphy.com/v1/gifs/trending?api_key=P0EofIvaUxXAwL0ehrTy3OooOg42OUi5&limit=20&rating=g"));
     else
       response = await http.get(Uri.parse(
-          "https://api.giphy.com/v1/gifs/search?api_key=N8EbEGTWj3Cy8583Ad35LsDBtDQqd5Bw&q=$_search&limit=20&offset=$offSet&rating=g&lang=en"));
+          "https://api.giphy.com/v1/gifs/search?api_key=N8EbEGTWj3Cy8583Ad35LsDBtDQqd5Bw&q=$_search&limit=25&offset=$offSet&rating=g&lang=en"));
     return jsonDecode(response.body);
   }
 
   @override
   void initState() {
     super.initState();
-    _getGifs().then((map) {
-      print(map);
-    });
+    _getGifs().then(print);
   }
 
   @override
@@ -64,8 +62,8 @@ class _HomePageState extends State<HomePage> {
                       case ConnectionState.waiting:
                       case ConnectionState.none:
                         return Container(
-                          width: 200.0,
-                          height: 200.0,
+                          width: 200,
+                          height: 200,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
                             valueColor:
@@ -74,12 +72,13 @@ class _HomePageState extends State<HomePage> {
                           ),
                         );
                       default:
-                        if (snapshot.hasError)
+                        if (snapshot.hasError) {
                           return Container();
-                        else
+                        } else {
                           return _createGifTable(context, snapshot);
+                        }
                     }
-                  }))
+                  })),
         ],
       ),
     );
@@ -89,13 +88,16 @@ class _HomePageState extends State<HomePage> {
     return GridView.builder(
       padding: EdgeInsets.all(10.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisExtent: 10.0),
+        crossAxisCount: 2,
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+      ),
       itemCount: snapshot.data["data"].length,
       itemBuilder: (context, index) {
         return GestureDetector(
           child: Image.network(
             snapshot.data["data"][index]["images"]["fixed_height"]["url"],
-            height: 300.0,
+            height: 500.0,
             fit: BoxFit.cover,
           ),
         );
