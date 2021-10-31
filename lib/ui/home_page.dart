@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gif_searcher/ui/gif_page.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     http.Response response;
     if (_search == null)
       response = await http.get(Uri.parse(
-          "https://api.giphy.com/v1/gifs/trending?api_key=P0EofIvaUxXAwL0ehrTy3OooOg42OUi5&limit=20&rating=g"));
+          "https://api.giphy.com/v1/gifs/trending?api_key=P0EofIvaUxXAwL0ehrTy3OooOg42OUi5&limit=19&rating=g"));
     else
       response = await http.get(Uri.parse(
           "https://api.giphy.com/v1/gifs/search?api_key=N8EbEGTWj3Cy8583Ad35LsDBtDQqd5Bw&q=$_search&limit=19&offset=$offSet&rating=g&lang=en"));
@@ -115,6 +116,13 @@ class _HomePageState extends State<HomePage> {
               height: 500.0,
               fit: BoxFit.cover,
             ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          GifPage(snapshot.data["data"][index])));
+            },
           );
         else
           return Container(
